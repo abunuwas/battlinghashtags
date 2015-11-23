@@ -1,0 +1,11 @@
+
+{% if latest_battle_list %}
+	<ul>
+		{% for battle in latest_battle_list %}
+			<li><b>Battle #{{ battle.id }}</b>, battle fought: {{ battle.battle_date }}, winner: {{ battle.winner }}, loser: {{ battle.loser }}</li>
+		{% endfor %}
+	</ul>
+
+{% else %}
+	<p>No battles have been created yet! Go ahead and create <a href="/battles/addBattle">one</a></p>
+{% endif %}
