@@ -1,32 +1,27 @@
 from django.contrib import admin
 
-from .models import Tweet, Hashtag, Battle
+from .models import Tweet, Hashtag, Battle, BattleOutcome
 
-class BattleAdmin(admin.ModelAdmin):
+class BattleOutcomeAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Battle #', {
-			'fields': ['id']
-			}),
-		('Battle date', {
-			'fields': ['battle_date']
+			'fields': ['battle']
 			}),
 		('Winner', {
-			'fields': ['winner']
+			'fields': ['winner_hashtag']
 			}),
 		('Loser', {
-			'fields': ['loser']
-			}),
-		('Duration', {
-			'fields': ['battle_span']
+			'fields': ['loser_hashtag']
 			}),
 	]
 
-	list_display = ('id', 'battle_date', 'winner', 'loser')
-	list_filter = ['battle_date']
+	list_display = ('battle', 'winner_hashtag', 'loser_hashtag')
+	#list_filter = ['battle_date']
 
 
 
 
-admin.site.register(Battle, BattleAdmin)
+admin.site.register(BattleOutcome, BattleOutcomeAdmin)
+admin.site.register(Battle)
 admin.site.register(Tweet)
 admin.site.register(Hashtag)

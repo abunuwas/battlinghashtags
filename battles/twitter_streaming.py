@@ -28,13 +28,15 @@ api = tweepy.API(auth)
 from django.utils import timezone
 
 class MyListener(StreamListener):
-    def __init__(self, time_span=0, current_time=datetime.datetime.now(), 
-                  final_time=0, hashtag1, hashtag2, battle_id):
+    def __init__(self, hashtag1, hashtag2, battle_id, time_span=0, 
+                  current_time=datetime.datetime.now(), final_time=0):
         self.time_span = datetime.timedelta(seconds=time_span)
         self.current_time = current_time
         self.final_time = self.current_time + self.time_span
         self.hashtag1 = hashtag1
+        self.hashtag1_id = Hashtag.objects.get(hashtagText=hashtag1).id
         self.hashtag2 = hashtag2
+        self.hashtag2_id = Hashtag.objects.get(hashtagText=hashtag2).id
         self.battle_id = battle_id
         print(self.current_time, self.final_time)
 
@@ -43,9 +45,16 @@ class MyListener(StreamListener):
         if datetime.datetime.now() < self.final_time:
           tweet = json.loads(data)
           created_at, hashtags, text = twitterAnalyzer(tweet)
-          
-          
 
+          for hashtag in hashtags:
+            if hashtag1[1:] == hashtag:
+              t = Tweet(text=text, created_at=created_at, typos=0,
+                battle=battle_id, hashtag=hashtag1_id)
+            if hashtag2[2:] == hashtag:
+              t = Tweet(text=text, created_at=created_at, typos=0,
+                battle=battle_id, hashtag=hashtag2_id)
+            else:
+              continue
 
         else:
           print('Competition ended')

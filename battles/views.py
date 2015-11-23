@@ -3,17 +3,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader 
 from django.core.urlresolvers import reverse 
 
-from .models import Battle, Hashtag, Tweet
+from .models import Battle, Hashtag, Tweet, BattleOutcome
 
 from .twitter_streaming import *
 from .twitter_analyzer import twitterAnalyzer
 
 
 def index(request):
-	latest_battle_list = Battle.objects.order_by('-battle_date')[:10]
+	latest_battle_list = BattleOutcome.objects.all()
 	for battle in latest_battle_list:
-		battle.winner = Hashtag.objects.get(pk=battle.winner).text
-		battle.loser = Hashtag.objects.get(pk=battle.loser).text
+		battle.winner = Hashtag.objects.get(pk=battle.winner_hashtag).text
+		battle.loser = Hashtag.objects.get(pk=battle.loser_hashtag).text
 	context = {'latest_battle_list': latest_battle_list}
 	return render(request, 'battles/index.html', context)
 
