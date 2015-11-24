@@ -28,37 +28,53 @@ api = tweepy.API(auth)
 from django.utils import timezone
 
 class MyListener(StreamListener):
-    def __init__(self, hashtag1, hashtag2, battle_id, time_span=0, 
+    def __init__(self, hashtag1, hashtag2, battle, time_span=0, 
                   current_time=datetime.datetime.now(), final_time=0):
         self.time_span = datetime.timedelta(seconds=time_span)
         self.current_time = current_time
         self.final_time = self.current_time + self.time_span
         self.hashtag1 = hashtag1
-        self.hashtag1_id = Hashtag.objects.get(hashtagText=hashtag1).id
+        self.hashtag1_id = hashtag1.id
+        self.hashtag1_text = hashtag1.hashtagText
         self.hashtag2 = hashtag2
-        self.hashtag2_id = Hashtag.objects.get(hashtagText=hashtag2).id
-        self.battle_id = battle_id
+        self.hashtag2_id = hashtag2.id
+        self.hashtag2_text = hashtag2.hashtagText
+        self.battle = battle
         print(self.current_time, self.final_time)
 
 
     def on_data(self, data):
-        if datetime.datetime.now() < self.final_time:
-          tweet = json.loads(data)
-          created_at, hashtags, text = twitterAnalyzer(tweet)
+      print('on_data')
+      print(datetime.datetime.now(), '-----', self.final_time)
 
-          for hashtag in hashtags:
-            if hashtag1[1:] == hashtag:
-              t = Tweet(text=text, created_at=created_at, typos=0,
-                battle=battle_id, hashtag=hashtag1_id)
-            if hashtag2[2:] == hashtag:
-              t = Tweet(text=text, created_at=created_at, typos=0,
-                battle=battle_id, hashtag=hashtag2_id)
-            else:
-              continue
+      if datetime.datetime.now() < self.final_time:
+        print('new data')
+        tweet = json.loads(data)
+        created_at, hashtags, text = twitterAnalyzer(tweet)
 
-        else:
-          print('Competition ended')
-          return False # This closes the stream listener
+        for hashtag in hashtags:
+          if self.hashtag1_text[1:].lower() == hashtag['text'].lower():
+            t = Tweet(text=text, created_at=created_at, typos=0,
+              battle=self.battle, hashtag=self.hashtag1)
+            t.save()
+            try:
+              print(t.text)
+            except UnicodeEncodeError:
+              pass
+          if self.hashtag2_text[1:].lower() == hashtag['text'].lower():
+            t = Tweet(text=text, created_at=created_at, typos=0,
+              battle=self.battle, hashtag=self.hashtag2)
+            t.save()
+            try:
+              print(t.text)
+            except UnicodeEncodeError:
+              pass
+          else:
+            continue
+
+      else:
+        print('Competition ended')
+        return False # This closes the stream listener
 
     def on_error(self, status_code):
       print('Got an error with status code: ' + str(status_code))

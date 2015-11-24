@@ -2,9 +2,11 @@
 {% if latest_battle_list %}
 	<ul>
 		{% for battle in latest_battle_list %}
-			<li><b>Battle #{{ battle.id }}</b>, battle fought: {{ battle.battle_date }}, winner: {{ battle.winner }}, loser: {{ battle.loser }}</li>
+			<li><b>Battle #{{ battle.id }}</b>, battle fought: {{ battle.battle.battle_date }}, winner: <b>{{ battle.winner_hashtag.hashtagText }}</b>: {{ battle.winner_tweets }} tweets; loser: <b>{{ battle.loser_hashtag.hashtagText }}</b>: {{ battle.loser_tweets }} tweets; Duration: {{ battle.battle.battle_span }}</li>
 		{% endfor %}
 	</ul>
+
+	<p>Create another <a href="/battles/addBattle">battle</a></p>
 
 {% else %}
 	<p>No battles have been created yet! Go ahead and create <a href="/battles/addBattle">one</a></p>
