@@ -19,6 +19,10 @@ and make them fight!
 1. The application has only been tested for Django 1.8 and Python 3. 
 2. Clone the whole repository locally.
 3. Open the command line and cd to the repository. 
+To resolve the dependencies for this project, run 
+`pip install -r requirements.txt` to install the packages
+which are required. Plase let me know if you find any problem
+when doing this. 
 4. type `python manage.py runserver` to start the server. 
 The command will tell you which port will be listening to
 the application. You can also personalize this feature with
