@@ -15,10 +15,10 @@ from .models import Battle, Hashtag, Tweet
 from .twitter_analyzer import twitterAnalyzer
 
 
-ACCESS_TOKEN = '453873532-wAUWfgUdWjNc1fYuDk9WY3GoSd4HV0iCpzdGtifJ'
-ACCESS_SECRET = 'JknLL0m9uSDgPeGj9JOtxUuDjiVrUjHxe6wOHQniAlKy2'
-CONSUMER_KEY = 'uGzNknNhK6LQh2EIzZX4vuUBI'
-CONSUMER_SECRET = 'MZgRHdYQzAwh8IO0pFDchsfX4ECxhazXB1vJqZMQuYF46UkOA7'
+ACCESS_TOKEN = ''
+ACCESS_SECRET = ''
+CONSUMER_KEY = ''
+CONSUMER_SECRET = ''
 
 auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
