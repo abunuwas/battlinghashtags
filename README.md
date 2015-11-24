@@ -50,3 +50,4 @@ to make things simple and avoid problems with config files. SQLite
 is not bad for prototyping, but for a real application it would be
 preferable to use something more robust, such as PostgreSQL. 
 10. The application doesn't have yet any tests. 
+11. The application doesn't have yet a REST API, but one will be added very soon. 
